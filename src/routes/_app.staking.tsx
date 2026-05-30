@@ -160,17 +160,10 @@ function Staking() {
           </table>
         </GlassCard>
         <GlassCard glow>
-          <SectionTitle title="Buy $PROPHET to Stake" />
+          <SectionTitle title="Stake Your Assets" />
           <p className="text-sm text-muted-foreground">
-            Use the integrated swap to acquire $PROPHET before staking — routed through Jupiter for
-            best execution.
+            Select a pool above to start earning yield — no minimum stake required.
           </p>
-          <button
-            onClick={() => toast.success("Opening Jupiter swap")}
-            className="mt-4 h-11 w-full rounded-xl bg-[linear-gradient(135deg,var(--prophet),var(--chain))] font-semibold text-primary-foreground"
-          >
-            Swap to $PROPHET
-          </button>
         </GlassCard>
       </div>
     </>

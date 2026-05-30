@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { Bell, Menu, Search, ChevronDown } from "lucide-react";
 import { useTicker, randomActivity } from "@/lib/mock";
 import { ConnectWallet } from "./ConnectWallet";
@@ -37,17 +36,12 @@ export function Topbar({ onMenu }: { onMenu?: () => void }) {
 
       <div className="flex-1 md:hidden" />
 
-      {/* Chain selector & notifications — client-only to avoid SSR HTMLElement issues */}
       <ClientOnly>
         <ChainSelector />
         <NotificationPopover />
       </ClientOnly>
 
       <ConnectWallet />
-
-      <div className="hidden lg:block">
-        <BuyProphetButton />
-      </div>
     </header>
   );
 }
@@ -112,8 +106,4 @@ function NotificationPopover() {
       )}
     </div>
   );
-}
-
-function BuyProphetButton() {
-  return <button className="rounded-lg bg-[color:var(--chain)] px-3 py-2 text-xs font-medium">Buy $PROPHET</button>;
 }

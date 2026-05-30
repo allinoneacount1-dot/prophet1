@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Brain, Coins, Globe2, Lock, Network, Sparkles, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { BuyProphetButton } from "@/components/app/BuyProphetButton";
 import { LiveTicker } from "@/components/app/LiveTicker";
 import { Spark } from "@/components/app/Spark";
 import { ConnectWallet } from "@/components/app/ConnectWallet";
@@ -93,7 +92,6 @@ function Index() {
         </nav>
         <div className="flex items-center gap-2">
           <ConnectWallet />
-          <BuyProphetButton size="sm" />
         </div>
       </motion.header>
 
@@ -139,7 +137,6 @@ function Index() {
             Launch App{" "}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
-          <BuyProphetButton size="lg" />
         </motion.div>
 
         <motion.div
@@ -301,7 +298,6 @@ function Index() {
             >
               Get Started
             </Link>
-            <BuyProphetButton />
           </div>
         </motion.div>
         <footer className="mt-10 flex flex-wrap items-center justify-between gap-4 text-xs text-muted-foreground">

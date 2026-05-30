@@ -20,7 +20,6 @@ import {
   UserCircle2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BuyProphetButton } from "./BuyProphetButton";
 import { ConnectWallet } from "./ConnectWallet";
 
 const sections = [
@@ -137,7 +136,6 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 
       <div className="border-t border-border p-4 space-y-3">
         <ConnectWallet />
-        <BuyProphetButton className="w-full justify-center" />
         <p className="mt-3 text-center text-[10px] text-muted-foreground">
           v2.0 · Multi-Chain · AI · DePIN
         </p>

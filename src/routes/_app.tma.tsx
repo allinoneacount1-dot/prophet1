@@ -68,7 +68,7 @@ function TMA() {
                   ))}
                 </div>
                 <div className="rounded-xl bg-[linear-gradient(135deg,var(--prophet),var(--chain))] py-3 text-center text-xs font-bold text-primary-foreground">
-                  Buy $PROPHET
+                  Launch App
                 </div>
               </div>
             </div>
