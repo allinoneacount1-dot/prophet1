@@ -207,7 +207,7 @@ function Index() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
         >
           {[
             {
@@ -257,17 +257,19 @@ function Index() {
               >
                 <Link
                   to={m.to}
-                  className="group relative overflow-hidden rounded-2xl border border-border bg-surface-1/40 p-6 transition-all hover:border-[color:var(--chain)]/40 hover:chain-glow"
+                  className="group relative h-full flex flex-col overflow-hidden rounded-3xl border border-border bg-surface-1/40 p-6 transition-all hover:border-[color:var(--chain)]/40 hover:chain-glow"
                 >
-                  <div className="absolute right-0 top-0 h-32 w-32 translate-x-10 -translate-y-10 rounded-full bg-[color:var(--chain)]/10 blur-3xl" />
+                  <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 translate-x-10 -translate-y-10 rounded-full bg-[color:var(--chain)]/10 blur-3xl" />
                   <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--chain)]/15 text-[color:var(--chain)]">
                     <Icon className="h-6 w-6" />
                   </div>
                   <div className="text-lg font-semibold">{m.title}</div>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
-                  <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-[color:var(--chain)]/10 px-4 py-2 text-xs font-medium text-[color:var(--chain)] transition-all group-hover:bg-[color:var(--chain)]/20">
-                    <span>Open</span>
-                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed flex-grow">{m.desc}</p>
+                  <div className="mt-auto pt-6">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-[color:var(--chain)]/10 px-4 py-2 text-xs font-medium text-[color:var(--chain)] transition-all group-hover:bg-[color:var(--chain)]/20">
+                      <span>Open</span>
+                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
                 </Link>
               </motion.div>
