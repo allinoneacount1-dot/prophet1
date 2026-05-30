@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bell, Menu, Search, ChevronDown } from "lucide-react";
-import { createPortal } from "react-dom";
 import { useTicker, randomActivity } from "@/lib/mock";
+import { ConnectWallet } from "./ConnectWallet";
 
 // ─── SSR-safe wrapper: only renders on client ─────────────────────
 function ClientOnly({ children }: { children: React.ReactNode }) {
@@ -114,11 +114,6 @@ function NotificationPopover() {
   );
 }
 
-// Stub — replaced by dynamic import in AppShell
 function BuyProphetButton() {
   return <button className="rounded-lg bg-[color:var(--chain)] px-3 py-2 text-xs font-medium">Buy $PROPHET</button>;
-}
-
-function ConnectWallet() {
-  return <button className="rounded-lg border border-border bg-surface-1/60 px-3 py-2 text-xs hover:bg-white/5">Connect</button>;
 }

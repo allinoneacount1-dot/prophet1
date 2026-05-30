@@ -7,10 +7,11 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChainProvider } from "@/lib/chain";
+import { SolanaWalletProvider } from "@/lib/solana-wallet";
 
 function NotFoundComponent() {
   return (
@@ -71,9 +72,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChainProvider>
-        <Outlet />
-      </ChainProvider>
+      <SolanaWalletProvider>
+        <ChainProvider>
+          <Outlet />
+        </ChainProvider>
+      </SolanaWalletProvider>
     </QueryClientProvider>
   );
 }
