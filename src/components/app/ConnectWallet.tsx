@@ -2,6 +2,7 @@ import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount, useDisconnect } from 'wagmi'
 import { Wallet } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { shortAddr } from '../../lib/chain'
 
 export function ConnectWallet() {
   const { open } = useWeb3Modal()
@@ -9,9 +10,7 @@ export function ConnectWallet() {
   const { disconnect } = useDisconnect()
 
   // Shorten address for display
-  const shortAddress = address 
-    ? `${address.slice(0, 6)}...${address.slice(-4)}`
-    : ''
+  const shortAddress = shortAddr(address || null)
 
   return (
     <div className="flex items-center gap-2">

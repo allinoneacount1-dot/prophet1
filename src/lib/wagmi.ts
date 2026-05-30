@@ -3,7 +3,11 @@ import { cookieStorage, createStorage } from 'wagmi'
 import { mainnet, sepolia, base, bsc } from 'wagmi/chains'
 
 // Get projectId from https://cloud.walletconnect.com
-export const projectId = 'd4d049a81df98c9f13ef7bfcf08599d5'
+export const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || ''
+
+if (!projectId) {
+  console.warn('VITE_WALLETCONNECT_PROJECT_ID is not set. Please set it in your .env file.')
+}
 
 export const config = defaultWagmiConfig({
   chains: [mainnet, sepolia, base, bsc],
@@ -15,7 +19,7 @@ export const config = defaultWagmiConfig({
   metadata: {
     name: 'Prophet',
     description: 'Prophet — AI Multi-Chain Wealth OS',
-    url: 'http://localhost:8080',
-    icons: ['http://localhost:8080/prophet-logo.png']
+    url: import.meta.env.VITE_APP_URL || 'http://localhost:8080',
+    icons: [import.meta.env.VITE_APP_LOGO_URL || 'http://localhost:8080/prophet-logo.png']
   }
 })
