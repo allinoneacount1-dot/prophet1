@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function StatCard({
@@ -15,7 +16,9 @@ export function StatCard({
   className?: string;
 }) {
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -4, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={cn(
         "glass rounded-2xl p-5 transition-all hover:-translate-y-0.5 hover:chain-glow",
         className,
@@ -25,9 +28,17 @@ export function StatCard({
         <div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
         {icon && <div className="text-[color:var(--chain)]">{icon}</div>}
       </div>
-      <div className="mt-3 text-2xl font-semibold tabular-nums">{value}</div>
+      <motion.div
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-3 text-2xl font-semibold tabular-nums"
+      >
+        {value}
+      </motion.div>
       {delta && (
-        <div
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           className={cn(
             "mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
             delta.positive
@@ -36,8 +47,8 @@ export function StatCard({
           )}
         >
           {delta.positive ? "▲" : "▼"} {delta.value}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

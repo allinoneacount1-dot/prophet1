@@ -7,8 +7,12 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — ProphetSol" },
-      { name: "description", content: "Connect a Web3 wallet or sign in with email. Smart Account & gasless transactions included." },
+      { title: "Sign in — Prophet" },
+      {
+        name: "description",
+        content:
+          "Connect a Web3 wallet or sign in with email. Smart Account & gasless transactions included.",
+      },
     ],
   }),
   component: AuthPage,
@@ -46,16 +50,22 @@ function AuthPage() {
       <div className="relative z-10 mx-auto grid min-h-screen max-w-6xl gap-10 px-6 py-12 lg:grid-cols-2 lg:items-center">
         <div>
           <Link to="/" className="inline-flex items-center gap-2">
-            <div className="relative h-9 w-9 rounded-lg bg-[linear-gradient(135deg,var(--prophet),var(--chain))] chain-glow">
-              <div className="absolute inset-0 grid place-items-center text-sm font-black text-primary-foreground">Ψ</div>
+            <div className="relative h-12 w-12 overflow-hidden">
+              <img 
+                src="/prophet-logo.png" 
+                alt="Prophet Logo" 
+                className="h-full w-full object-contain"
+                style={{ aspectRatio: '1/1' }}
+              />
             </div>
-            <span className="text-sm font-bold">ProphetSol</span>
+            <span className="text-sm font-bold">Prophet</span>
           </Link>
           <h1 className="mt-10 text-4xl font-bold leading-tight md:text-5xl">
             The Gatekeeper to the <span className="text-gradient-chain">Prophet Era</span>.
           </h1>
           <p className="mt-4 max-w-md text-sm text-muted-foreground md:text-base">
-            Bring any wallet — or sign in with email and we'll auto-provision a Smart Account with gasless transactions on your behalf.
+            Bring any wallet — or sign in with email and we'll auto-provision a Smart Account with
+            gasless transactions on your behalf.
           </p>
           <ul className="mt-8 space-y-3 text-sm">
             {[
@@ -83,7 +93,9 @@ function AuthPage() {
                 key={m}
                 onClick={() => setMode(m)}
                 className={`flex-1 rounded-full px-4 py-2 capitalize transition-all ${
-                  mode === m ? "bg-[color:var(--chain)]/15 text-[color:var(--chain)]" : "text-muted-foreground hover:text-foreground"
+                  mode === m
+                    ? "bg-[color:var(--chain)]/15 text-[color:var(--chain)]"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {m === "login" ? "Sign in" : "Create account"}
@@ -97,7 +109,9 @@ function AuthPage() {
                 <ShieldCheck className="h-7 w-7" />
               </div>
               <div className="mt-4 text-lg font-semibold">Smart Account ready</div>
-              <p className="mt-1 text-sm text-muted-foreground">Routing you to your command center…</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Routing you to your command center…
+              </p>
             </div>
           ) : phase === "creating" ? (
             <div className="py-10 text-center">
@@ -134,7 +148,8 @@ function AuthPage() {
               </form>
 
               <div className="my-6 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
-                <div className="h-px flex-1 bg-border" /> or connect wallet <div className="h-px flex-1 bg-border" />
+                <div className="h-px flex-1 bg-border" /> or connect wallet{" "}
+                <div className="h-px flex-1 bg-border" />
               </div>
 
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">

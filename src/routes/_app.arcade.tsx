@@ -11,16 +11,36 @@ export const Route = createFileRoute("/_app/arcade")({
 });
 
 const GAMES = [
-  { name: "Run Prophet Run", desc: "Endless runner. Burn calories, earn $PROPHET.", color: "var(--chain)" },
-  { name: "Oracle Tower", desc: "Tower-defense with on-chain leaderboards.", color: "var(--chain-2)" },
-  { name: "Whale Hunt", desc: "Predict whale moves to win bonus drops.", color: "oklch(0.78 0.18 60)" },
-  { name: "Vault Crash", desc: "Crash-style game with provably-fair RNG.", color: "oklch(0.7 0.22 25)" },
+  {
+    name: "Run Prophet Run",
+    desc: "Endless runner. Burn calories, earn $PROPHET.",
+    color: "var(--chain)",
+  },
+  {
+    name: "Oracle Tower",
+    desc: "Tower-defense with on-chain leaderboards.",
+    color: "var(--chain-2)",
+  },
+  {
+    name: "Whale Hunt",
+    desc: "Predict whale moves to win bonus drops.",
+    color: "oklch(0.78 0.18 60)",
+  },
+  {
+    name: "Vault Crash",
+    desc: "Crash-style game with provably-fair RNG.",
+    color: "oklch(0.7 0.22 25)",
+  },
 ];
 
 function Arcade() {
   return (
     <>
-      <PageHeader eyebrow="ProphetSol Arcade" title="GameFi Hub" description="Mini-games powered by $PROPHET. Monthly leaderboard rewards for top players." />
+      <PageHeader
+        eyebrow="Prophet Arcade"
+        title="GameFi Hub"
+        description="Mini-games powered by $PROPHET. Monthly leaderboard rewards for top players."
+      />
 
       <div className="grid gap-4 md:grid-cols-2">
         {GAMES.map((g) => (
@@ -35,17 +55,34 @@ function Arcade() {
                 <div className="text-base font-semibold">{g.name}</div>
                 <div className="text-xs text-muted-foreground">{g.desc}</div>
               </div>
-              <button onClick={() => toast.success(`Launching ${g.name}…`)} className="rounded-lg bg-[linear-gradient(135deg,var(--prophet),var(--chain))] px-3 py-1.5 text-xs font-semibold text-primary-foreground">Play</button>
+              <button
+                onClick={() => toast.success(`Launching ${g.name}…`)}
+                className="rounded-lg bg-[linear-gradient(135deg,var(--prophet),var(--chain))] px-3 py-1.5 text-xs font-semibold text-primary-foreground"
+              >
+                Play
+              </button>
             </div>
           </GlassCard>
         ))}
       </div>
 
       <div className="mt-8">
-        <SectionTitle icon={<Trophy className="h-4 w-4" />} title="Global Leaderboard" hint="This month · 250,000 $PROPHET prize pool" />
+        <SectionTitle
+          icon={<Trophy className="h-4 w-4" />}
+          title="Global Leaderboard"
+          hint="This month · 250,000 $PROPHET prize pool"
+        />
         <GlassCard>
           <table className="w-full text-sm">
-            <thead className="text-left text-[11px] uppercase tracking-widest text-muted-foreground"><tr><th className="py-2">#</th><th>Player</th><th>Game</th><th>Score</th><th>Reward</th></tr></thead>
+            <thead className="text-left text-[11px] uppercase tracking-widest text-muted-foreground">
+              <tr>
+                <th className="py-2">#</th>
+                <th>Player</th>
+                <th>Game</th>
+                <th>Score</th>
+                <th>Reward</th>
+              </tr>
+            </thead>
             <tbody>
               {[
                 [1, "neon.sol", "Run Prophet Run", "428,210", "50,000 $PROPHET"],
@@ -55,7 +92,8 @@ function Arcade() {
               ].map((r) => (
                 <tr key={r[0]} className="border-t border-border">
                   <td className="py-3 font-semibold text-[color:var(--chain)]">#{r[0]}</td>
-                  <td>{r[1]}</td><td className="text-muted-foreground">{r[2]}</td>
+                  <td>{r[1]}</td>
+                  <td className="text-muted-foreground">{r[2]}</td>
                   <td className="tabular-nums">{r[3]}</td>
                   <td className="text-[color:var(--success)]">{r[4]}</td>
                 </tr>

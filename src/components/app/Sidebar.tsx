@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BuyProphetButton } from "./BuyProphetButton";
+import { ConnectWallet } from "./ConnectWallet";
 
 const sections = [
   {
@@ -74,14 +75,16 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     <aside className="flex h-full w-72 flex-col border-r border-border bg-sidebar/80 backdrop-blur-xl">
       <div className="flex h-16 items-center gap-2 border-b border-border px-5">
         <Link to="/" className="flex items-center gap-2">
-          <div className="relative h-8 w-8 rounded-lg bg-[linear-gradient(135deg,var(--prophet),var(--chain))] chain-glow">
-            <div className="absolute inset-1 rounded-md bg-background/40 backdrop-blur" />
-            <div className="absolute inset-0 grid place-items-center text-xs font-black text-primary-foreground">
-              Ψ
-            </div>
+          <div className="relative h-10 w-10 overflow-hidden">
+            <img 
+              src="/prophet-logo.png" 
+              alt="Prophet Logo" 
+              className="h-full w-full object-contain"
+              style={{ aspectRatio: '1/1' }}
+            />
           </div>
           <div>
-            <div className="text-sm font-bold leading-none">ProphetSol</div>
+            <div className="text-sm font-bold leading-none">Prophet</div>
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
               Wealth OS
             </div>
@@ -132,7 +135,8 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         ))}
       </nav>
 
-      <div className="border-t border-border p-4">
+      <div className="border-t border-border p-4 space-y-3">
+        <ConnectWallet />
         <BuyProphetButton className="w-full justify-center" />
         <p className="mt-3 text-center text-[10px] text-muted-foreground">
           v2.0 · Multi-Chain · AI · DePIN

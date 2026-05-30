@@ -55,7 +55,7 @@ export const ACTIVITY_VERBS = [
 export const TOKENS = ["$PROPHET", "SOL", "BNB", "ETH", "USDC", "JUP", "WIF", "PEPE", "BONK"];
 
 export function randomActivity(seed: number) {
-  const r = (n: number) => Math.floor(((seed * 9301 + n * 49297) % 233280) / 233280 * 1000);
+  const r = (n: number) => Math.floor((((seed * 9301 + n * 49297) % 233280) / 233280) * 1000);
   const verb = ACTIVITY_VERBS[r(1) % ACTIVITY_VERBS.length];
   const token = TOKENS[r(2) % TOKENS.length];
   const amount = (1 + (r(3) % 9999) / 100).toFixed(2);

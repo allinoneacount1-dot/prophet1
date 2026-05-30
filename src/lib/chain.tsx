@@ -81,7 +81,9 @@ export function ChainProvider({ children }: { children: ReactNode }) {
 
   function setChainPersist(c: Chain) {
     setChain(c);
-    try { localStorage.setItem("ps:chain", c); } catch {}
+    try {
+      localStorage.setItem("ps:chain", c);
+    } catch {}
   }
 
   return (

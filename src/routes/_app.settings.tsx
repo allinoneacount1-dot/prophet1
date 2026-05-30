@@ -7,25 +7,50 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/settings")({
-  head: () => ({ meta: [{ title: "Settings — ProphetSol" }] }),
+  head: () => ({ meta: [{ title: "Settings — Prophet" }] }),
   component: Settings,
 });
 
 function Settings() {
   const { chain, setChain } = useChain();
   type NotifKey = "ai" | "stake" | "gov" | "friends";
-  const [n, setN] = useState<Record<NotifKey, boolean>>({ ai: true, stake: true, gov: false, friends: true });
+  const [n, setN] = useState<Record<NotifKey, boolean>>({
+    ai: true,
+    stake: true,
+    gov: false,
+    friends: true,
+  });
+
+  const notifItems: { label: string; key: NotifKey }[] = [
+    { label: "AI Alerts", key: "ai" },
+    { label: "Staking Rewards", key: "stake" },
+    { label: "Governance Updates", key: "gov" },
+    { label: "Friend Activities", key: "friends" },
+  ];
+
   return (
     <>
-      <PageHeader eyebrow="Settings" title="Preferences & Security" description="Manage wallets, notifications, theme, and devices." />
+      <PageHeader
+        eyebrow="Settings"
+        title="Preferences & Security"
+        description="Manage wallets, notifications, theme, and devices."
+      />
       <div className="grid gap-4 md:grid-cols-2">
         <GlassCard>
           <div className="mb-4 text-sm font-semibold">Wallet Management</div>
           <div className="space-y-2 text-sm">
             {WALLETS.map((w) => (
-              <div key={w.id} className="flex items-center justify-between rounded-lg border border-border bg-surface-1/40 p-3">
+              <div
+                key={w.id}
+                className="flex items-center justify-between rounded-lg border border-border bg-surface-1/40 p-3"
+              >
                 <span>{w.label}</span>
-                <button onClick={() => toast.success(`${w.label} reconnected`)} className="text-xs text-[color:var(--chain)]">Reconnect</button>
+                <button
+                  onClick={() => toast.success(`${w.label} reconnected`)}
+                  className="text-xs text-[color:var(--chain)]"
+                >
+                  Reconnect
+                </button>
               </div>
             ))}
           </div>
@@ -33,12 +58,7 @@ function Settings() {
         <GlassCard>
           <div className="mb-4 text-sm font-semibold">Notification Preferences</div>
           <div className="space-y-3 text-sm">
-            {[
-              ["AI Alerts", "ai" as const],
-              ["Staking Rewards", "stake" as const],
-              ["Governance Updates", "gov" as const],
-              ["Friend Activities", "friends" as const],
-            ].map(([label, key]) => (
+            {notifItems.map(({ label, key }) => (
               <div key={key} className="flex items-center justify-between">
                 <span>{label}</span>
                 <Switch checked={n[key]} onCheckedChange={(v) => setN({ ...n, [key]: v })} />
@@ -50,7 +70,11 @@ function Settings() {
           <div className="mb-4 text-sm font-semibold">Active Chain</div>
           <div className="grid grid-cols-2 gap-2">
             {CHAINS.map((c) => (
-              <button key={c.id} onClick={() => setChain(c.id)} className={`rounded-lg border p-3 text-left text-sm ${chain === c.id ? "border-[color:var(--chain)] chain-glow" : "border-border bg-surface-1/40"}`}>
+              <button
+                key={c.id}
+                onClick={() => setChain(c.id)}
+                className={`rounded-lg border p-3 text-left text-sm ${chain === c.id ? "border-[color:var(--chain)] chain-glow" : "border-border bg-surface-1/40"}`}
+              >
                 <span className="block font-semibold">{c.label}</span>
                 <span className="text-xs text-muted-foreground">{c.symbol}</span>
               </button>
@@ -65,9 +89,20 @@ function Settings() {
               ["iPhone 16 · Safari", "Jakarta · 2h ago"],
               ["Telegram Mini App", "Mobile · 1d ago"],
             ].map(([d, s]) => (
-              <li key={d} className="flex items-center justify-between rounded-lg border border-border bg-surface-1/40 p-3">
-                <span>{d}<div className="text-xs text-muted-foreground">{s}</div></span>
-                <button onClick={() => toast(`Signed out: ${d}`)} className="text-xs text-[color:var(--danger)]">Sign out</button>
+              <li
+                key={d}
+                className="flex items-center justify-between rounded-lg border border-border bg-surface-1/40 p-3"
+              >
+                <span>
+                  {d}
+                  <div className="text-xs text-muted-foreground">{s}</div>
+                </span>
+                <button
+                  onClick={() => toast(`Signed out: ${d}`)}
+                  className="text-xs text-[color:var(--danger)]"
+                >
+                  Sign out
+                </button>
               </li>
             ))}
           </ul>

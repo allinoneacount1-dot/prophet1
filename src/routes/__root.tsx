@@ -8,11 +8,21 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-
+import { WagmiProvider } from "wagmi";
+import { createWeb3Modal } from '@web3modal/wagmi/react'
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChainProvider } from "@/lib/chain";
+import { config, projectId } from "@/lib/wagmi";
 import { Toaster } from "@/components/ui/sonner";
+
+// Initialize Web3Modal
+createWeb3Modal({
+  wagmiConfig: config,
+  projectId,
+  enableAnalytics: true, // Optional
+  themeMode: 'dark'
+})
 
 function NotFoundComponent() {
   return (
@@ -79,23 +89,43 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ProphetSol Multi-Chain Wealth OS" },
+      { title: "Prophet Multi-Chain Wealth OS" },
       {
         name: "description",
         content:
-          "ProphetSol is an institutional-grade, AI-powered multi-chain Wealth OS for DeAI, DeFi, SocialFi, DePIN, DAO, and Gaming across Solana, BNB, Base, and Ethereum.",
+          "Prophet is an institutional-grade, AI-powered multi-chain Wealth OS for DeAI, DeFi, SocialFi, DePIN, DAO, and Gaming across Solana, BNB, Base, and Ethereum.",
       },
-      { name: "author", content: "ProphetSol" },
-      { property: "og:title", content: "ProphetSol Multi-Chain Wealth OS" },
-      { property: "og:description", content: "ProphetSol is an AI-powered multi-chain intelligence and wealth operating system." },
+      { name: "author", content: "Prophet" },
+      { property: "og:title", content: "Prophet Multi-Chain Wealth OS" },
+      {
+        property: "og:description",
+        content:
+          "Prophet is an AI-powered multi-chain intelligence and wealth operating system.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@ProphetSol" },
-      { name: "twitter:title", content: "ProphetSol Multi-Chain Wealth OS" },
-      { name: "description", content: "ProphetSol is an AI-powered multi-chain intelligence and wealth operating system." },
-      { name: "twitter:description", content: "ProphetSol is an AI-powered multi-chain intelligence and wealth operating system." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d377872f-f258-402a-9391-4b3ca0b1a133/id-preview-f20cc638--7ff84605-eee7-4b8d-b964-15f8215550c7.lovable.app-1780138314173.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d377872f-f258-402a-9391-4b3ca0b1a133/id-preview-f20cc638--7ff84605-eee7-4b8d-b964-15f8215550c7.lovable.app-1780138314173.png" },
+      { name: "twitter:site", content: "@Prophet" },
+      { name: "twitter:title", content: "Prophet Multi-Chain Wealth OS" },
+      {
+        name: "description",
+        content:
+          "Prophet is an AI-powered multi-chain intelligence and wealth operating system.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Prophet is an AI-powered multi-chain intelligence and wealth operating system.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d377872f-f258-402a-9391-4b3ca0b1a133/id-preview-f20cc638--7ff84605-eee7-4b8d-b964-15f8215550c7.lovable.app-1780138314173.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d377872f-f258-402a-9391-4b3ca0b1a133/id-preview-f20cc638--7ff84605-eee7-4b8d-b964-15f8215550c7.lovable.app-1780138314173.png",
+      },
     ],
     links: [
       {
@@ -129,10 +159,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChainProvider>
-        <Outlet />
-        <Toaster theme="dark" position="bottom-right" />
-      </ChainProvider>
+      <WagmiProvider config={config}>
+        <ChainProvider>
+          <Outlet />
+          <Toaster theme="dark" position="bottom-right" />
+        </ChainProvider>
+      </WagmiProvider>
     </QueryClientProvider>
   );
 }

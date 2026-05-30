@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell, Menu, Search, ChevronDown, LogOut, Wallet } from "lucide-react";
-import { CHAINS, useChain, shortAddr, WALLETS } from "@/lib/chain";
+import { Bell, Menu, Search, ChevronDown } from "lucide-react";
+import { CHAINS, useChain } from "@/lib/chain";
 import { cn } from "@/lib/utils";
 import { BuyProphetButton } from "./BuyProphetButton";
 import {
@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useTicker, randomActivity } from "@/lib/mock";
-import { toast } from "sonner";
+import { ConnectWallet } from "./ConnectWallet";
 
 export function Topbar({ onMenu }: { onMenu?: () => void }) {
-  const { chain, setChain, wallet, address, connect, disconnect, connected } = useChain();
+  const { chain, setChain } = useChain();
   const [q, setQ] = useState("");
   const tick = useTicker(3000);
   const notifs = Array.from({ length: 6 }, (_, i) => randomActivity(tick + i * 13));
@@ -45,7 +45,10 @@ export function Topbar({ onMenu }: { onMenu?: () => void }) {
 
       <DropdownMenu>
         <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface-1/60 px-3 py-2 text-xs font-medium hover:bg-white/5">
-          <span className="h-2 w-2 rounded-full chain-glow" style={{ background: "var(--chain)" }} />
+          <span
+            className="h-2 w-2 rounded-full chain-glow"
+            style={{ background: "var(--chain)" }}
+          />
           <span className="hidden sm:inline">{CHAINS.find((c) => c.id === chain)?.label}</span>
           <ChevronDown className="h-3 w-3 opacity-60" />
         </DropdownMenuTrigger>
@@ -102,61 +105,7 @@ export function Topbar({ onMenu }: { onMenu?: () => void }) {
         </PopoverContent>
       </Popover>
 
-      {connected ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-lg border border-[color:var(--chain)]/40 bg-[color:var(--chain)]/10 px-3 py-2 text-xs font-medium">
-            <Wallet className="h-3.5 w-3.5 text-[color:var(--chain)]" />
-            <span className="hidden font-mono sm:inline">{shortAddr(address)}</span>
-            <ChevronDown className="h-3 w-3 opacity-60" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuLabel className="capitalize">{wallet} Wallet</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/profile">Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/settings">Settings</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                disconnect();
-                toast("Wallet disconnected");
-              }}
-              className="text-destructive"
-            >
-              <LogOut className="mr-2 h-3.5 w-3.5" /> Disconnect
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            className={cn(
-              "inline-flex items-center gap-2 rounded-lg border border-border bg-surface-1/60 px-3 py-2 text-xs font-medium hover:bg-white/5",
-            )}
-          >
-            <Wallet className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Connect</span>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuLabel>Choose wallet</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {WALLETS.map((w) => (
-              <DropdownMenuItem
-                key={w.id}
-                onClick={() => {
-                  connect(w.id);
-                  toast.success(`${w.label} connected`);
-                }}
-              >
-                {w.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      <ConnectWallet />
 
       <div className="hidden lg:block">
         <BuyProphetButton size="sm" />

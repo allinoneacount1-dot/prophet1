@@ -58,7 +58,7 @@
 }
 
 :root {
-  /* ProphetSol — Institutional dark theme (default) */
+  /* Prophet — Institutional dark theme (default) */
   --radius: 0.75rem;
   --background: oklch(0.13 0.025 270);
   --foreground: oklch(0.97 0.01 250);
@@ -152,7 +152,11 @@
       radial-gradient(700px 500px at 110% 10%, oklch(0.78 0.2 200 / 0.1), transparent 60%);
     background-attachment: fixed;
   }
-  html, body, #root { min-height: 100vh; }
+  html,
+  body,
+  #root {
+    min-height: 100vh;
+  }
 }
 
 @layer utilities {
@@ -166,7 +170,9 @@
     backdrop-filter: blur(22px) saturate(160%);
     border: 1px solid oklch(1 0 0 / 0.1);
   }
-  .chain-glow { box-shadow: var(--chain-glow); }
+  .chain-glow {
+    box-shadow: var(--chain-glow);
+  }
   .text-gradient-chain {
     background: var(--gradient-chain);
     -webkit-background-clip: text;
@@ -185,20 +191,46 @@
       linear-gradient(90deg, oklch(1 0 0 / 0.04) 1px, transparent 1px);
     background-size: 32px 32px;
   }
-  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
   @keyframes prophet-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 oklch(0.78 0.18 285 / 0.6), 0 0 30px oklch(0.78 0.18 285 / 0.4); }
-    50% { box-shadow: 0 0 0 14px oklch(0.78 0.18 285 / 0), 0 0 50px oklch(0.78 0.18 285 / 0.7); }
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 0 oklch(0.78 0.18 285 / 0.6),
+        0 0 30px oklch(0.78 0.18 285 / 0.4);
+    }
+    50% {
+      box-shadow:
+        0 0 0 14px oklch(0.78 0.18 285 / 0),
+        0 0 50px oklch(0.78 0.18 285 / 0.7);
+    }
   }
-  .animate-prophet-pulse { animation: prophet-pulse 2.4s ease-in-out infinite; }
+  .animate-prophet-pulse {
+    animation: prophet-pulse 2.4s ease-in-out infinite;
+  }
   @keyframes ticker-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
-  .animate-ticker { animation: ticker-scroll 40s linear infinite; }
+  .animate-ticker {
+    animation: ticker-scroll 40s linear infinite;
+  }
   @keyframes float-y {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
   }
-  .animate-float { animation: float-y 6s ease-in-out infinite; }
+  .animate-float {
+    animation: float-y 6s ease-in-out infinite;
+  }
 }
