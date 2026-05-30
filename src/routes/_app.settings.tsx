@@ -13,7 +13,8 @@ export const Route = createFileRoute("/_app/settings")({
 
 function Settings() {
   const { chain, setChain } = useChain();
-  const [n, setN] = useState({ ai: true, stake: true, gov: false, friends: true });
+  type NotifKey = "ai" | "stake" | "gov" | "friends";
+  const [n, setN] = useState<Record<NotifKey, boolean>>({ ai: true, stake: true, gov: false, friends: true });
   return (
     <>
       <PageHeader eyebrow="Settings" title="Preferences & Security" description="Manage wallets, notifications, theme, and devices." />
