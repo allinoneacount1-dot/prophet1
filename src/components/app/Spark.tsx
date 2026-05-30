@@ -1,6 +1,15 @@
 import { useMemo } from "react";
 import { useTicker } from "@/lib/mock";
 
+// Simple seeded random number generator for deterministic output
+function seededRandom(seed: number): () => number {
+  let s = seed;
+  return function () {
+    s = Math.sin(s * 9999) * 9999;
+    return s - Math.floor(s);
+  };
+}
+
 export function Spark({
   color = "var(--chain)",
   height = 48,
@@ -17,8 +26,9 @@ export function Spark({
     const n = 32;
     const arr: number[] = [];
     let v = 50 + (seed % 30);
+    const rand = seededRandom(seed + tick);
     for (let i = 0; i < n; i++) {
-      v += (Math.sin((i + tick) * 0.6 + seed) + (Math.random() - 0.5)) * 4;
+      v += (Math.sin((i + tick) * 0.6 + seed) + (rand() - 0.5)) * 4;
       arr.push(v);
     }
     return arr;
