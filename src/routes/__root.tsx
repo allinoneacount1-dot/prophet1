@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode, lazy, Suspense } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { WagmiProvider } from "wagmi";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -19,14 +19,9 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Page not found.</p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+          <Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Go home</Link>
         </div>
       </div>
     </div>
@@ -36,24 +31,13 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold text-foreground">Something went wrong</h1>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => { router.invalidate(); reset(); }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-          >
-            Try again
-          </button>
-          <a href="/" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm">
-            Go home
-          </a>
+        <div className="mt-6 flex gap-2 justify-center">
+          <button onClick={() => { router.invalidate(); reset(); }} className="rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">Try again</button>
+          <a href="/" className="rounded-md border px-4 py-2 text-sm">Go home</a>
         </div>
       </div>
     </div>
@@ -89,33 +73,20 @@ function RootComponent() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Dynamic import web3modal only on client to avoid Lit/HTMLElement SSR crash
     import("@web3modal/wagmi/react").then(({ createWeb3Modal }) => {
-      const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
-      if (projectId) {
-        createWeb3Modal({ wagmiConfig: config, projectId, enableAnalytics: false, themeMode: "dark" });
-      }
+      const pid = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
+      if (pid) createWeb3Modal({ wagmiConfig: config, projectId: pid, enableAnalytics: false, themeMode: "dark" });
     }).catch(() => {});
     setReady(true);
   }, []);
 
-  if (!ready) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={config}>
-          <ChainProvider>
-            <Outlet />
-          </ChainProvider>
-        </WagmiProvider>
-      </QueryClientProvider>
-    );
-  }
-
+  // Always render QueryClientProvider + WagmiProvider
+  // On SSR (before hydration), render minimal shell
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiProvider config={config}>
         <ChainProvider>
-          <Outlet />
+          {ready ? <Outlet /> : <div style={{ minHeight: 1 }} />}
         </ChainProvider>
       </WagmiProvider>
     </QueryClientProvider>
