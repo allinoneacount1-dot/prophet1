@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { ChainProvider } from "@/lib/chain";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -77,14 +79,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "ProphetSol — AI-Powered Multi-Chain Wealth OS" },
+      {
+        name: "description",
+        content:
+          "ProphetSol is an institutional-grade, AI-powered multi-chain Wealth OS for DeAI, DeFi, SocialFi, DePIN, DAO, and Gaming across Solana, BNB, Base, and Ethereum.",
+      },
+      { name: "author", content: "ProphetSol" },
+      { property: "og:title", content: "ProphetSol — AI Multi-Chain Wealth OS" },
+      { property: "og:description", content: "Trade, stake, vote, and earn across chains — powered by DeAI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@ProphetSol" },
     ],
     links: [
       {
@@ -118,8 +124,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <ChainProvider>
+        <Outlet />
+        <Toaster theme="dark" position="bottom-right" />
+      </ChainProvider>
     </QueryClientProvider>
   );
 }

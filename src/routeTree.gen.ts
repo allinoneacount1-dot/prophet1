@@ -9,38 +9,293 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppTokenomicsRouteImport } from './routes/_app.tokenomics'
+import { Route as AppTmaRouteImport } from './routes/_app.tma'
+import { Route as AppStakingRouteImport } from './routes/_app.staking'
+import { Route as AppSocialfiRouteImport } from './routes/_app.socialfi'
+import { Route as AppSettingsRouteImport } from './routes/_app.settings'
+import { Route as AppSecurityRouteImport } from './routes/_app.security'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppPricingRouteImport } from './routes/_app.pricing'
+import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
+import { Route as AppGovernanceRouteImport } from './routes/_app.governance'
+import { Route as AppDocsRouteImport } from './routes/_app.docs'
+import { Route as AppDepinRouteImport } from './routes/_app.depin'
+import { Route as AppDeaiRouteImport } from './routes/_app.deai'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppCopilotRouteImport } from './routes/_app.copilot'
+import { Route as AppBridgeRouteImport } from './routes/_app.bridge'
+import { Route as AppArcadeRouteImport } from './routes/_app.arcade'
+import { Route as AppAnalyticsRouteImport } from './routes/_app.analytics'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppTokenomicsRoute = AppTokenomicsRouteImport.update({
+  id: '/tokenomics',
+  path: '/tokenomics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTmaRoute = AppTmaRouteImport.update({
+  id: '/tma',
+  path: '/tma',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStakingRoute = AppStakingRouteImport.update({
+  id: '/staking',
+  path: '/staking',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSocialfiRoute = AppSocialfiRouteImport.update({
+  id: '/socialfi',
+  path: '/socialfi',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSecurityRoute = AppSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPricingRoute = AppPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGovernanceRoute = AppGovernanceRouteImport.update({
+  id: '/governance',
+  path: '/governance',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDocsRoute = AppDocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDepinRoute = AppDepinRouteImport.update({
+  id: '/depin',
+  path: '/depin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDeaiRoute = AppDeaiRouteImport.update({
+  id: '/deai',
+  path: '/deai',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCopilotRoute = AppCopilotRouteImport.update({
+  id: '/copilot',
+  path: '/copilot',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBridgeRoute = AppBridgeRouteImport.update({
+  id: '/bridge',
+  path: '/bridge',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppArcadeRoute = AppArcadeRouteImport.update({
+  id: '/arcade',
+  path: '/arcade',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/analytics': typeof AppAnalyticsRoute
+  '/arcade': typeof AppArcadeRoute
+  '/bridge': typeof AppBridgeRoute
+  '/copilot': typeof AppCopilotRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/deai': typeof AppDeaiRoute
+  '/depin': typeof AppDepinRoute
+  '/docs': typeof AppDocsRoute
+  '/governance': typeof AppGovernanceRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/pricing': typeof AppPricingRoute
+  '/profile': typeof AppProfileRoute
+  '/security': typeof AppSecurityRoute
+  '/settings': typeof AppSettingsRoute
+  '/socialfi': typeof AppSocialfiRoute
+  '/staking': typeof AppStakingRoute
+  '/tma': typeof AppTmaRoute
+  '/tokenomics': typeof AppTokenomicsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/analytics': typeof AppAnalyticsRoute
+  '/arcade': typeof AppArcadeRoute
+  '/bridge': typeof AppBridgeRoute
+  '/copilot': typeof AppCopilotRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/deai': typeof AppDeaiRoute
+  '/depin': typeof AppDepinRoute
+  '/docs': typeof AppDocsRoute
+  '/governance': typeof AppGovernanceRoute
+  '/notifications': typeof AppNotificationsRoute
+  '/pricing': typeof AppPricingRoute
+  '/profile': typeof AppProfileRoute
+  '/security': typeof AppSecurityRoute
+  '/settings': typeof AppSettingsRoute
+  '/socialfi': typeof AppSocialfiRoute
+  '/staking': typeof AppStakingRoute
+  '/tma': typeof AppTmaRoute
+  '/tokenomics': typeof AppTokenomicsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_app/analytics': typeof AppAnalyticsRoute
+  '/_app/arcade': typeof AppArcadeRoute
+  '/_app/bridge': typeof AppBridgeRoute
+  '/_app/copilot': typeof AppCopilotRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/deai': typeof AppDeaiRoute
+  '/_app/depin': typeof AppDepinRoute
+  '/_app/docs': typeof AppDocsRoute
+  '/_app/governance': typeof AppGovernanceRoute
+  '/_app/notifications': typeof AppNotificationsRoute
+  '/_app/pricing': typeof AppPricingRoute
+  '/_app/profile': typeof AppProfileRoute
+  '/_app/security': typeof AppSecurityRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/socialfi': typeof AppSocialfiRoute
+  '/_app/staking': typeof AppStakingRoute
+  '/_app/tma': typeof AppTmaRoute
+  '/_app/tokenomics': typeof AppTokenomicsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/analytics'
+    | '/arcade'
+    | '/bridge'
+    | '/copilot'
+    | '/dashboard'
+    | '/deai'
+    | '/depin'
+    | '/docs'
+    | '/governance'
+    | '/notifications'
+    | '/pricing'
+    | '/profile'
+    | '/security'
+    | '/settings'
+    | '/socialfi'
+    | '/staking'
+    | '/tma'
+    | '/tokenomics'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/analytics'
+    | '/arcade'
+    | '/bridge'
+    | '/copilot'
+    | '/dashboard'
+    | '/deai'
+    | '/depin'
+    | '/docs'
+    | '/governance'
+    | '/notifications'
+    | '/pricing'
+    | '/profile'
+    | '/security'
+    | '/settings'
+    | '/socialfi'
+    | '/staking'
+    | '/tma'
+    | '/tokenomics'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/auth'
+    | '/_app/analytics'
+    | '/_app/arcade'
+    | '/_app/bridge'
+    | '/_app/copilot'
+    | '/_app/dashboard'
+    | '/_app/deai'
+    | '/_app/depin'
+    | '/_app/docs'
+    | '/_app/governance'
+    | '/_app/notifications'
+    | '/_app/pricing'
+    | '/_app/profile'
+    | '/_app/security'
+    | '/_app/settings'
+    | '/_app/socialfi'
+    | '/_app/staking'
+    | '/_app/tma'
+    | '/_app/tokenomics'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +303,184 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/tokenomics': {
+      id: '/_app/tokenomics'
+      path: '/tokenomics'
+      fullPath: '/tokenomics'
+      preLoaderRoute: typeof AppTokenomicsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/tma': {
+      id: '/_app/tma'
+      path: '/tma'
+      fullPath: '/tma'
+      preLoaderRoute: typeof AppTmaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/staking': {
+      id: '/_app/staking'
+      path: '/staking'
+      fullPath: '/staking'
+      preLoaderRoute: typeof AppStakingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/socialfi': {
+      id: '/_app/socialfi'
+      path: '/socialfi'
+      fullPath: '/socialfi'
+      preLoaderRoute: typeof AppSocialfiRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/security': {
+      id: '/_app/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof AppSecurityRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/pricing': {
+      id: '/_app/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof AppPricingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/governance': {
+      id: '/_app/governance'
+      path: '/governance'
+      fullPath: '/governance'
+      preLoaderRoute: typeof AppGovernanceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/docs': {
+      id: '/_app/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof AppDocsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/depin': {
+      id: '/_app/depin'
+      path: '/depin'
+      fullPath: '/depin'
+      preLoaderRoute: typeof AppDepinRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/deai': {
+      id: '/_app/deai'
+      path: '/deai'
+      fullPath: '/deai'
+      preLoaderRoute: typeof AppDeaiRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/copilot': {
+      id: '/_app/copilot'
+      path: '/copilot'
+      fullPath: '/copilot'
+      preLoaderRoute: typeof AppCopilotRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/bridge': {
+      id: '/_app/bridge'
+      path: '/bridge'
+      fullPath: '/bridge'
+      preLoaderRoute: typeof AppBridgeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/arcade': {
+      id: '/_app/arcade'
+      path: '/arcade'
+      fullPath: '/arcade'
+      preLoaderRoute: typeof AppArcadeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/analytics': {
+      id: '/_app/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAnalyticsRoute: typeof AppAnalyticsRoute
+  AppArcadeRoute: typeof AppArcadeRoute
+  AppBridgeRoute: typeof AppBridgeRoute
+  AppCopilotRoute: typeof AppCopilotRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppDeaiRoute: typeof AppDeaiRoute
+  AppDepinRoute: typeof AppDepinRoute
+  AppDocsRoute: typeof AppDocsRoute
+  AppGovernanceRoute: typeof AppGovernanceRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
+  AppPricingRoute: typeof AppPricingRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppSecurityRoute: typeof AppSecurityRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppSocialfiRoute: typeof AppSocialfiRoute
+  AppStakingRoute: typeof AppStakingRoute
+  AppTmaRoute: typeof AppTmaRoute
+  AppTokenomicsRoute: typeof AppTokenomicsRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAnalyticsRoute: AppAnalyticsRoute,
+  AppArcadeRoute: AppArcadeRoute,
+  AppBridgeRoute: AppBridgeRoute,
+  AppCopilotRoute: AppCopilotRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppDeaiRoute: AppDeaiRoute,
+  AppDepinRoute: AppDepinRoute,
+  AppDocsRoute: AppDocsRoute,
+  AppGovernanceRoute: AppGovernanceRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
+  AppPricingRoute: AppPricingRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppSecurityRoute: AppSecurityRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppSocialfiRoute: AppSocialfiRoute,
+  AppStakingRoute: AppStakingRoute,
+  AppTmaRoute: AppTmaRoute,
+  AppTokenomicsRoute: AppTokenomicsRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
