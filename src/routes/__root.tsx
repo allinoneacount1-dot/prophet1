@@ -76,16 +76,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-// ─── Client-only wrapper ───────────────────────────────────────────
-function ClientOnly({ children }: { children: ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) return null;
-  return <>{children}</>;
-}
-
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -97,39 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Prophet is an institutional-grade, AI-powered multi-chain Wealth OS for DeAI, DeFi, SocialFi, DePIN, DAO, and Gaming across Solana, BNB, Base, and Ethereum.",
       },
-      { name: "author", content: "Prophet" },
-      { property: "og:title", content: "Prophet Multi-Chain Wealth OS" },
-      {
-        property: "og:description",
-        content:
-          "Prophet is an AI-powered multi-chain intelligence and wealth operating system.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Prophet" },
-      { name: "twitter:title", content: "Prophet Multi-Chain Wealth OS" },
-      {
-        name: "twitter:description",
-        content:
-          "Prophet is an AI-powered multi-chain intelligence and wealth operating system.",
-      },
-      {
-        property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d377872f-f258-402a-9391-4b3ca0b1a133/id-preview-f20cc638--7ff84605-eee7-4b8d-b964-15f8215550c7.lovable.app-1780138314173.png",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d377872f-f258-402a-9391-4b3ca0b1a133/id-preview-f20cc638--7ff84605-eee7-4b8d-b964-15f8215550c7.lovable.app-1780138314173.png",
-      },
     ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
+    links: [{ rel: "stylesheet", href: appCss }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -153,9 +112,10 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [ready, setReady] = useState(false);
 
-  // Initialize Web3Modal only on client
   useEffect(() => {
+    // Initialize Web3Modal only on client after mount
     if (projectId) {
       createWeb3Modal({
         wagmiConfig: config,
@@ -164,16 +124,24 @@ function RootComponent() {
         themeMode: "dark",
       });
     }
+    setReady(true);
   }, []);
+
+  // Render nothing on server — pure client-side rendering
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="text-sm text-muted-foreground">Loading Prophet…</div>
+      </div>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiProvider config={config}>
         <ChainProvider>
           <Outlet />
-          <ClientOnly>
-            <Toaster theme="dark" position="bottom-right" />
-          </ClientOnly>
+          <Toaster theme="dark" position="bottom-right" />
         </ChainProvider>
       </WagmiProvider>
     </QueryClientProvider>
