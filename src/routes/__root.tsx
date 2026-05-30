@@ -8,11 +8,9 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { WagmiProvider } from "wagmi";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChainProvider } from "@/lib/chain";
-import { config } from "@/lib/wagmi";
 
 function NotFoundComponent() {
   return (
@@ -70,25 +68,12 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    import("@web3modal/wagmi/react").then(({ createWeb3Modal }) => {
-      const pid = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
-      if (pid) createWeb3Modal({ wagmiConfig: config, projectId: pid, enableAnalytics: false, themeMode: "dark" });
-    }).catch(() => {});
-    setReady(true);
-  }, []);
-
-  // Always render QueryClientProvider + WagmiProvider
-  // On SSR (before hydration), render minimal shell
   return (
     <QueryClientProvider client={queryClient}>
-      <WagmiProvider config={config}>
-        <ChainProvider>
-          {ready ? <Outlet /> : <div style={{ minHeight: 1 }} />}
-        </ChainProvider>
-      </WagmiProvider>
+      <ChainProvider>
+        <Outlet />
+      </ChainProvider>
     </QueryClientProvider>
   );
 }
