@@ -7,22 +7,14 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { WagmiProvider } from "wagmi";
-import { createWeb3Modal } from '@web3modal/wagmi/react'
+import { createWeb3Modal } from "@web3modal/wagmi/react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChainProvider } from "@/lib/chain";
 import { config, projectId } from "@/lib/wagmi";
 import { Toaster } from "@/components/ui/sonner";
-
-// Initialize Web3Modal
-createWeb3Modal({
-  wagmiConfig: config,
-  projectId,
-  enableAnalytics: true, // Optional
-  themeMode: 'dark'
-})
 
 function NotFoundComponent() {
   return (
@@ -84,6 +76,16 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+// ─── Client-only wrapper ───────────────────────────────────────────
+function ClientOnly({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
+  return <>{children}</>;
+}
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -106,11 +108,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Prophet" },
       { name: "twitter:title", content: "Prophet Multi-Chain Wealth OS" },
-      {
-        name: "description",
-        content:
-          "Prophet is an AI-powered multi-chain intelligence and wealth operating system.",
-      },
       {
         name: "twitter:description",
         content:
@@ -157,12 +154,26 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  // Initialize Web3Modal only on client
+  useEffect(() => {
+    if (projectId) {
+      createWeb3Modal({
+        wagmiConfig: config,
+        projectId,
+        enableAnalytics: false,
+        themeMode: "dark",
+      });
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiProvider config={config}>
         <ChainProvider>
           <Outlet />
-          <Toaster theme="dark" position="bottom-right" />
+          <ClientOnly>
+            <Toaster theme="dark" position="bottom-right" />
+          </ClientOnly>
         </ChainProvider>
       </WagmiProvider>
     </QueryClientProvider>
