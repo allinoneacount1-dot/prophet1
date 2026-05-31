@@ -4,6 +4,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { safeStorage } from "./security-utils";
 
 // ─── Price Alert Types ──────────────────────────────────────────────
 export interface PriceAlert {
@@ -189,20 +190,14 @@ export function useWhaleAlerts() {
   });
 }
 
+
 // ─── Local Storage for Price Alerts ────────────────────────────────
 export function loadAlerts(): PriceAlert[] {
-  try {
-    const stored = localStorage.getItem("ps:priceAlerts");
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
+  return safeStorage.getJSON<PriceAlert[]>("ps:priceAlerts", []);
 }
 
 export function saveAlerts(alerts: PriceAlert[]) {
-  try {
-    localStorage.setItem("ps:priceAlerts", JSON.stringify(alerts));
-  } catch {}
+  safeStorage.setJSON("ps:priceAlerts", alerts);
 }
 
 export function addAlert(alert: Omit<PriceAlert, "id" | "triggered" | "createdAt">): PriceAlert {

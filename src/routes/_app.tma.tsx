@@ -9,7 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPortfolio, fetchSinglePrice } from "@/lib/onchain";
 import { useJupiterQuote } from "@/lib/useOnchain";
 import { fmtUsd } from "@/lib/mock";
-import { verifyInitDataBrowser } from "@/lib/telegram-auth";
 
 export const Route = createFileRoute("/_app/tma")({
   head: () => ({ meta: [{ title: "Prophet TMA" }] }),
@@ -21,8 +20,7 @@ type TMATab = "home" | "dashboard" | "swap" | "staking" | "profile";
 function useTelegramWebApp() {
   const [isTMA, setIsTMA] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [verified, setVerified] = useState(false);
-  const [verifying, setVerifying] = useState(true);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const tg = (window as any).Telegram?.WebApp;
@@ -31,14 +29,11 @@ function useTelegramWebApp() {
       tg.ready();
       tg.expand();
       setUser(tg.initDataUnsafe?.user || null);
-      const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN || "";
-      if (botToken) {
-        verifyInitDataBrowser(tg.initData, botToken).then((v) => { setVerified(v); setVerifying(false); });
-      } else { setVerified(true); setVerifying(false); }
-    } else { setVerifying(false); }
+    }
+    setReady(true);
   }, []);
 
-  return { isTMA, user, verified, verifying };
+  return { isTMA, user, ready };
 }
 
 function TMA_TAB_BAR({ active, onSelect }: { active: TMATab; onSelect: (t: TMATab) => void }) {
@@ -225,11 +220,11 @@ function TMAProfileView() {
 
 // ─── Main TMA Page ─────────────────────────────────────────────────
 function TMAPage() {
-  const { isTMA, user, verified, verifying } = useTelegramWebApp();
+  const { isTMA, user, ready } = useTelegramWebApp();
   const [tab, setTab] = useState<TMATab>("home");
 
-  if (verifying) {
-    return <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center"><div className="text-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-[#14F195] border-t-transparent mx-auto mb-3" /><div className="text-sm text-muted-foreground">Verifying…</div></div></div>;
+  if (!ready) {
+    return <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center"><div className="text-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-[#14F195] border-t-transparent mx-auto mb-3" /><div className="text-sm text-muted-foreground">Loading…</div></div></div>;
   }
 
   if (!isTMA) {
