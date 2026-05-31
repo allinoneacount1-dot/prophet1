@@ -4,8 +4,9 @@ import { GlassCard } from "@/components/app/GlassCard";
 import { SectionTitle } from "@/components/app/SectionTitle";
 import { StatCard } from "@/components/app/StatCard";
 import { Spark } from "@/components/app/Spark";
-import { Brain, Crown, Flame, Radar, Vault, Zap } from "lucide-react";
+import { Brain, Crown, Flame, Radar, Vault, Zap, TrendingUp, TrendingDown } from "lucide-react";
 import { useTicker } from "@/lib/mock";
+import { useTokenPrice } from "@/lib/useOnchain";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/deai")({
@@ -29,14 +30,50 @@ const VAULTS = [
 
 function DeAI() {
   useTicker(2000);
+
+  // Fetch real prices
+  const { data: solPrice } = useTokenPrice("SOL");
+  const { data: ethPrice } = useTokenPrice("ETH");
+  const { data: bnbPrice } = useTokenPrice("BNB");
+  const { data: jupPrice } = useTokenPrice("JUP");
+  const { data: wifPrice } = useTokenPrice("WIF");
+  const { data: bonkPrice } = useTokenPrice("BONK");
+
+  const prices = [
+    { name: "SOL", price: solPrice, icon: "◎" },
+    { name: "ETH", price: ethPrice, icon: "Ξ" },
+    { name: "BNB", price: bnbPrice, icon: "◆" },
+    { name: "JUP", price: jupPrice, icon: "🪐" },
+    { name: "WIF", price: wifPrice, icon: "🐕" },
+    { name: "BONK", price: bonkPrice, icon: "🐕" },
+    { name: "USDC", price: 1, icon: "$" },
+  ];
+
   return (
     <>
       <PageHeader
         eyebrow="Intelligence Hub"
         title="DeAI · The Oracle Layer"
-        description="Real-time on-chain intelligence, alpha discovery, and automated AI-managed vaults."
+        description="Real-time on-chain intelligence with live pricing from CoinGecko."
       />
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+
+      {/* Live Price Ticker */}
+      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+        {prices.map((p) => (
+          <div
+            key={p.name}
+            className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-surface-1/60 px-3 py-1.5 text-xs"
+          >
+            <span className="text-sm">{p.icon}</span>
+            <span className="font-medium">{p.name}</span>
+            <span className="tabular-nums text-[color:var(--chain)]">
+              {p.price ? `$${p.price < 1 ? p.price.toFixed(4) : p.price.toFixed(2)}` : "—"}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="AI Prediction Accuracy"
           value="94.2%"
@@ -119,8 +156,18 @@ function DeAI() {
           </div>
           <div className="mt-2 flex items-center justify-between text-xs">
             <span className="text-muted-foreground">Trend</span>
-            <span className="font-semibold">Bullish reversal</span>
+            <span className="font-semibold flex items-center gap-1">
+              <TrendingUp className="h-3 w-3 text-[color:var(--success)]" />
+              Bullish reversal
+            </span>
           </div>
+          {/* SOL dominance */}
+          {solPrice && (
+            <div className="mt-2 flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">SOL Price</span>
+              <span className="font-semibold">${solPrice.toFixed(2)}</span>
+            </div>
+          )}
         </GlassCard>
       </div>
 

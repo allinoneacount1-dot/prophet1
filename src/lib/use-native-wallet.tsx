@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-// ─── Wallet detection via browser extension injection ──────────────
+// ─── Wallet detection via browser extension injection ───────────────
 // Zero dependencies — langsung detect window.solana, window.solflare, etc.
 
 interface WalletDescriptor {
@@ -20,45 +20,17 @@ interface WalletProvider {
   on: (event: string, cb: () => void) => void;
   off: (event: string, cb: () => void) => void;
   signMessage?: (msg: Uint8Array) => Promise<{ signature: Uint8Array }>;
+  signAndSendTransaction?: (tx: any) => Promise<{ signature: string }>;
+  signTransaction?: (tx: any) => Promise<any>;
 }
 
 const KNOWN_WALLETS = [
-  {
-    key: "phantom",
-    name: "Phantom",
-    icon: "👻",
-    url: "https://phantom.app/download",
-  },
-  {
-    key: "solflare",
-    name: "Solflare",
-    icon: "🔥",
-    url: "https://solflare.com/download",
-  },
-  {
-    key: "coinbase",
-    name: "Coinbase Wallet",
-    icon: "🔵",
-    url: "https://www.coinbase.com/wallet",
-  },
-  {
-    key: "trust",
-    name: "Trust Wallet",
-    icon: "🛡️",
-    url: "https://trustwallet.com/download",
-  },
-  {
-    key: "backpack",
-    name: "Backpack",
-    icon: "🎒",
-    url: "https://backpack.app/download",
-  },
-  {
-    key: "glow",
-    name: "Glow",
-    icon: "✨",
-    url: "https://glow.app/download",
-  },
+  { key: "phantom", name: "Phantom", icon: "👻", url: "https://phantom.app/download" },
+  { key: "solflare", name: "Solflare", icon: "🔥", url: "https://solflare.com/download" },
+  { key: "coinbase", name: "Coinbase Wallet", icon: "🔵", url: "https://www.coinbase.com/wallet" },
+  { key: "trust", name: "Trust Wallet", icon: "🛡️", url: "https://trustwallet.com/download" },
+  { key: "backpack", name: "Backpack", icon: "🎒", url: "https://backpack.app/download" },
+  { key: "glow", name: "Glow", icon: "✨", url: "https://glow.app/download" },
 ] as const;
 
 function getProvider(key: string): (() => WalletProvider) | null {
@@ -71,9 +43,7 @@ function getProvider(key: string): (() => WalletProvider) | null {
       case "solflare":
         return w.solflare?.isSolflare ? (() => w.solflare) : null;
       case "coinbase":
-        return w.coinbaseWalletExtension
-          ? (() => w.coinbaseWalletExtension)
-          : null;
+        return w.coinbaseWalletExtension ? (() => w.coinbaseWalletExtension) : null;
       case "trust":
         return w.trustwallet?.solana ? (() => w.trustwallet.solana) : null;
       case "backpack":
