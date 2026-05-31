@@ -154,10 +154,11 @@ export interface PortfolioData {
 }
 
 export async function fetchPortfolio(address: string): Promise<PortfolioData> {
-  const [solBal, tokenAccs, prices] = await Promise.all([
+  const [solBal, tokenAccs, prices, stakedSol] = await Promise.all([
     fetchSolBalance(address),
     fetchSolTokenBalances(address),
     fetchTokenPrices(["SOL", "ETH", "BNB", "USDC", "JUP", "WIF", "BONK"]),
+    fetchStakedSOL(address),
   ]);
 
   const priceMap = new Map(prices.map((p) => [p.symbol.toUpperCase(), p.price]));
@@ -179,8 +180,9 @@ export async function fetchPortfolio(address: string): Promise<PortfolioData> {
   });
 
   const solValue = solBal * solPrice;
+  const stakedValue = stakedSol * solPrice;
   const tokensValue = tokenBalances.reduce((s, t) => s + t.value, 0);
-  const totalValue = solValue + tokensValue;
+  const totalValue = solValue + stakedValue + tokensValue;
 
   // Chain breakdown (simplified — all on Solana for now)
   const chainBreakdown = [
@@ -322,5 +324,31 @@ export async function fetchTransactionHistory(
     return data || [];
   } catch {
     return [];
+  }
+}
+
+// ─── Staked SOL (native staking) ────────────────────────────────────
+
+export async function fetchStakedSOL(address: string): Promise<number> {
+  try {
+    const solana = await import("@solana/web3.js");
+    const conn = new solana.Connection("https://api.mainnet-beta.solana.com", "confirmed");
+    const pubkey = new solana.PublicKey(address);
+
+    const accounts = await conn.getParsedProgramAccounts(solana.StakeProgram.programId, {
+      filters: [
+        { dataSize: 200 },
+        { memcmp: { offset: 12, bytes: pubkey.toBase58() } },
+      ],
+    });
+
+    let totalLamports = 0;
+    for (const acc of accounts) {
+      totalLamports += acc.account.lamports || 0;
+    }
+
+    return totalLamports / solana.LAMPORTS_PER_SOL;
+  } catch {
+    return 0;
   }
 }

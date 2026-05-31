@@ -15,6 +15,7 @@ export {
   fetchJupiterQuote,
   fetchSolBalance,
   fetchLiFiQuote,
+  fetchStakedSOL,
 } from "./onchain";
 export type { PortfolioData, TokenPrice, JupiterQuote, BridgeQuote } from "./onchain";
 
