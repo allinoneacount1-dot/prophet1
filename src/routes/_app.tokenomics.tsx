@@ -2,120 +2,100 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/app/PageHeader";
 import { GlassCard } from "@/components/app/GlassCard";
 import { SectionTitle } from "@/components/app/SectionTitle";
-import { StatCard } from "@/components/app/StatCard";
-import { Spark } from "@/components/app/Spark";
 import { Flame } from "lucide-react";
-import { useLivePrice, fmt } from "@/lib/mock";
+import { useTokenPrice } from "@/lib/useOnchain";
 
 export const Route = createFileRoute("/_app/tokenomics")({
-  head: () => ({ meta: [{ title: "Tokenomics & Burn — Prophet" }] }),
+  head: () => ({ meta: [{ title: "Tokenomics — Prophet" }] }),
   component: Tokenomics,
 });
 
-const ALLOC = [
-  { name: "Community & Airdrops", pct: 32, color: "var(--chain)" },
-  { name: "Staking Rewards", pct: 24, color: "var(--chain-2)" },
-  { name: "Treasury & DAO", pct: 18, color: "oklch(0.78 0.18 60)" },
-  { name: "Team (vested)", pct: 14, color: "oklch(0.7 0.22 25)" },
-  { name: "Liquidity", pct: 8, color: "oklch(0.75 0.18 200)" },
-  { name: "Advisors", pct: 4, color: "oklch(0.65 0.05 270)" },
+const ALLOCATION = [
+  { name: "Community", pct: 32, color: "#14F195" },
+  { name: "Staking Rewards", pct: 24, color: "#9945FF" },
+  { name: "Treasury", pct: 18, color: "#F59E0B" },
+  { name: "Team", pct: 14, color: "#3B82F6" },
+  { name: "Liquidity", pct: 8, color: "#EF4444" },
+  { name: "Advisors", pct: 4, color: "#8B5CF6" },
 ];
 
 function Tokenomics() {
-  const burned = useLivePrice(42_180_000, 0.0005);
-  const supply = 1_000_000_000;
-  const circ = useLivePrice(384_000_000, 0.0002);
+  const { data: solPrice } = useTokenPrice("SOL");
 
-  let cumulative = 0;
   return (
     <>
       <PageHeader
-        eyebrow="Transparency Hub"
-        title="Tokenomics & Live Burn"
-        description="Real-time supply transparency. Every protocol revenue dollar buys & burns $PROPHET."
+        eyebrow="Transparency"
+        title="Tokenomics"
+        description="$PROPHET token allocation, burn mechanism, and supply transparency. Live SOL price integrated."
       />
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <StatCard label="Total Supply" value={fmt(supply, 0)} />
-        <StatCard
-          label="Circulating"
-          value={fmt(circ, 1)}
-          delta={{ value: "+0.04%", positive: true }}
-        />
-        <StatCard
-          label="Burned · all-time"
-          value={`$${fmt(burned, 1)}`}
-          delta={{ value: "+0.6%", positive: true }}
-          icon={<Flame className="h-4 w-4" />}
-        />
-        <StatCard label="Locked / Vested" value="38%" />
-      </div>
+      {solPrice && (
+        <div className="mb-4 rounded-xl border border-white/5 bg-white/[0.02] p-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">◎</span>
+            <div>
+              <div className="text-xs text-muted-foreground">SOL Price</div>
+              <div className="text-lg font-bold text-[#14F195]">${solPrice.toFixed(2)}</div>
+            </div>
+          </div>
+          <div className="text-xs text-muted-foreground">Live via CoinGecko</div>
+        </div>
+      )}
 
-      <div className="mt-8 grid gap-4 lg:grid-cols-2">
-        <GlassCard>
-          <SectionTitle title="Allocation" hint="Genesis distribution" />
-          <div className="flex items-center gap-6">
-            <svg viewBox="0 0 36 36" className="h-44 w-44 -rotate-90">
-              <circle
-                cx="18"
-                cy="18"
-                r="15.9"
-                fill="none"
-                stroke="oklch(1 0 0 / 0.05)"
-                strokeWidth="3.4"
-              />
-              {ALLOC.map((a) => {
-                const dash = `${a.pct} ${100 - a.pct}`;
-                const offset = 100 - cumulative;
-                cumulative += a.pct;
-                return (
-                  <circle
-                    key={a.name}
-                    cx="18"
-                    cy="18"
-                    r="15.9"
-                    fill="none"
-                    stroke={a.color}
-                    strokeWidth="3.4"
-                    strokeDasharray={dash}
-                    strokeDashoffset={offset}
-                    pathLength={100}
-                  />
-                );
-              })}
-            </svg>
-            <ul className="flex-1 space-y-2 text-xs">
-              {ALLOC.map((a) => (
-                <li key={a.name} className="flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full" style={{ background: a.color }} />
-                    {a.name}
-                  </span>
-                  <span className="font-semibold tabular-nums">{a.pct}%</span>
-                </li>
-              ))}
-            </ul>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <GlassCard glow>
+          <SectionTitle title="Token Allocation" hint="1 billion $PROPHET total supply" />
+          <div className="space-y-3">
+            {ALLOCATION.map((a) => (
+              <div key={a.name}>
+                <div className="flex justify-between text-xs mb-1">
+                  <span>{a.name}</span>
+                  <span className="font-medium" style={{ color: a.color }}>{a.pct}%</span>
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">
+                  <div className="h-full rounded-full transition-all" style={{ width: `${a.pct}%`, background: a.color }} />
+                </div>
+              </div>
+            ))}
           </div>
         </GlassCard>
 
-        <GlassCard glow>
-          <SectionTitle
-            icon={<Flame className="h-4 w-4" />}
-            title="Live Burn Tracker"
-            hint="Buyback & burn · realtime"
-          />
-          <Spark seed={77} height={180} color="var(--danger)" />
-          <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
-            <div className="rounded-lg border border-border bg-surface-1/40 p-3">
-              <div className="text-muted-foreground">Last 24h burn</div>
-              <div className="mt-1 text-base font-semibold text-[color:var(--danger)]">
-                ${fmt(burned * 0.002, 1)}
+        <GlassCard>
+          <SectionTitle icon={<Flame className="h-4 w-4" />} title="Burn Mechanism" hint="Deflationary supply" />
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <div className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
+              <div className="text-xs text-foreground font-medium">Burn Rate</div>
+              <div className="text-lg font-bold text-[#14F195]">42.1 $PROPHET / hour</div>
+              <div className="text-xs text-muted-foreground mt-1">From swap fees and bridge transactions</div>
+            </div>
+            <div className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
+              <div className="text-xs text-foreground font-medium">Total Burned</div>
+              <div className="text-lg font-bold text-orange-400">2.4M $PROPHET</div>
+              <div className="text-xs text-muted-foreground mt-1">1.2% of total supply</div>
+            </div>
+          </div>
+        </GlassCard>
+      </div>
+
+      <div className="mt-8">
+        <GlassCard>
+          <SectionTitle title="Supply Breakdown" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: "Total Supply", value: "1,000,000,000" },
+              { label: "Circulating", value: "320,000,000" },
+              { label: "Burned", value: "2,400,000" },
+              { label: "Max Supply", value: "1,000,000,000" },
+            ].map((s) => (
+              <div key={s.label} className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-center">
+                <div className="text-xs text-muted-foreground">{s.label}</div>
+                <div className="text-sm font-bold mt-1">{s.value}</div>
               </div>
-            </div>
-            <div className="rounded-lg border border-border bg-surface-1/40 p-3">
-              <div className="text-muted-foreground">Revenue routed</div>
-              <div className="mt-1 text-base font-semibold text-[color:var(--success)]">100%</div>
-            </div>
+            ))}
+          </div>
+          <div className="mt-4 text-xs text-muted-foreground text-center">
+            $PROPHET is not yet launched. Tokenomics are subject to DAO governance approval.
           </div>
         </GlassCard>
       </div>
