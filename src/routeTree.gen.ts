@@ -21,6 +21,8 @@ import { Route as AppSecurityRouteImport } from './routes/_app.security'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppPricingRouteImport } from './routes/_app.pricing'
 import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
+import { Route as AppNftRouteImport } from './routes/_app.nft'
+import { Route as AppLaunchpadRouteImport } from './routes/_app.launchpad'
 import { Route as AppGovernanceRouteImport } from './routes/_app.governance'
 import { Route as AppDocsRouteImport } from './routes/_app.docs'
 import { Route as AppDepinRouteImport } from './routes/_app.depin'
@@ -90,6 +92,16 @@ const AppNotificationsRoute = AppNotificationsRouteImport.update({
   path: '/notifications',
   getParentRoute: () => AppRoute,
 } as any)
+const AppNftRoute = AppNftRouteImport.update({
+  id: '/nft',
+  path: '/nft',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLaunchpadRoute = AppLaunchpadRouteImport.update({
+  id: '/launchpad',
+  path: '/launchpad',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppGovernanceRoute = AppGovernanceRouteImport.update({
   id: '/governance',
   path: '/governance',
@@ -148,6 +160,8 @@ export interface FileRoutesByFullPath {
   '/depin': typeof AppDepinRoute
   '/docs': typeof AppDocsRoute
   '/governance': typeof AppGovernanceRoute
+  '/launchpad': typeof AppLaunchpadRoute
+  '/nft': typeof AppNftRoute
   '/notifications': typeof AppNotificationsRoute
   '/pricing': typeof AppPricingRoute
   '/profile': typeof AppProfileRoute
@@ -170,6 +184,8 @@ export interface FileRoutesByTo {
   '/depin': typeof AppDepinRoute
   '/docs': typeof AppDocsRoute
   '/governance': typeof AppGovernanceRoute
+  '/launchpad': typeof AppLaunchpadRoute
+  '/nft': typeof AppNftRoute
   '/notifications': typeof AppNotificationsRoute
   '/pricing': typeof AppPricingRoute
   '/profile': typeof AppProfileRoute
@@ -194,6 +210,8 @@ export interface FileRoutesById {
   '/_app/depin': typeof AppDepinRoute
   '/_app/docs': typeof AppDocsRoute
   '/_app/governance': typeof AppGovernanceRoute
+  '/_app/launchpad': typeof AppLaunchpadRoute
+  '/_app/nft': typeof AppNftRoute
   '/_app/notifications': typeof AppNotificationsRoute
   '/_app/pricing': typeof AppPricingRoute
   '/_app/profile': typeof AppProfileRoute
@@ -218,6 +236,8 @@ export interface FileRouteTypes {
     | '/depin'
     | '/docs'
     | '/governance'
+    | '/launchpad'
+    | '/nft'
     | '/notifications'
     | '/pricing'
     | '/profile'
@@ -240,6 +260,8 @@ export interface FileRouteTypes {
     | '/depin'
     | '/docs'
     | '/governance'
+    | '/launchpad'
+    | '/nft'
     | '/notifications'
     | '/pricing'
     | '/profile'
@@ -263,6 +285,8 @@ export interface FileRouteTypes {
     | '/_app/depin'
     | '/_app/docs'
     | '/_app/governance'
+    | '/_app/launchpad'
+    | '/_app/nft'
     | '/_app/notifications'
     | '/_app/pricing'
     | '/_app/profile'
@@ -366,6 +390,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppNotificationsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/nft': {
+      id: '/_app/nft'
+      path: '/nft'
+      fullPath: '/nft'
+      preLoaderRoute: typeof AppNftRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/launchpad': {
+      id: '/_app/launchpad'
+      path: '/launchpad'
+      fullPath: '/launchpad'
+      preLoaderRoute: typeof AppLaunchpadRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/governance': {
       id: '/_app/governance'
       path: '/governance'
@@ -442,6 +480,8 @@ interface AppRouteChildren {
   AppDepinRoute: typeof AppDepinRoute
   AppDocsRoute: typeof AppDocsRoute
   AppGovernanceRoute: typeof AppGovernanceRoute
+  AppLaunchpadRoute: typeof AppLaunchpadRoute
+  AppNftRoute: typeof AppNftRoute
   AppNotificationsRoute: typeof AppNotificationsRoute
   AppPricingRoute: typeof AppPricingRoute
   AppProfileRoute: typeof AppProfileRoute
@@ -463,6 +503,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppDepinRoute: AppDepinRoute,
   AppDocsRoute: AppDocsRoute,
   AppGovernanceRoute: AppGovernanceRoute,
+  AppLaunchpadRoute: AppLaunchpadRoute,
+  AppNftRoute: AppNftRoute,
   AppNotificationsRoute: AppNotificationsRoute,
   AppPricingRoute: AppPricingRoute,
   AppProfileRoute: AppProfileRoute,
