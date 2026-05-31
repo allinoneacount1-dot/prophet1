@@ -3,12 +3,14 @@
 
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Home, LayoutDashboard, ArrowDownUp, Coins, User } from "lucide-react";
+import { Home, LayoutDashboard, ArrowDownUp, Coins, User, ExternalLink, ArrowDown } from "lucide-react";
 import { useNativeWallet, shortAddr } from "@/lib/use-native-wallet";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPortfolio, fetchSinglePrice } from "@/lib/onchain";
 import { useJupiterQuote } from "@/lib/useOnchain";
 import { fmtUsd } from "@/lib/mock";
+import { haptic, hapticNotify } from "@/lib/use-haptic";
+import { parseDeepLink, getInitialTab, getReferralCode, type DeepLinkTarget } from "@/lib/tma-deeplink";
 
 export const Route = createFileRoute("/_app/tma")({
   head: () => ({ meta: [{ title: "Prophet TMA" }] }),
@@ -82,6 +84,8 @@ function TMAHome({ onNavigate }: { onNavigate: (t: TMATab) => void }) {
   const { data: solPrice } = useQuery({ queryKey: ["tmaSolPrice"], queryFn: () => fetchSinglePrice("SOL"), staleTime: 15000 });
   const { data: portfolio } = useQuery({ queryKey: ["tmaPortfolio", publicKey], queryFn: () => fetchPortfolio(publicKey!), enabled: !!publicKey, staleTime: 15000 });
 
+  const go = (t: TMATab) => { haptic("light"); onNavigate(t); };
+
   return (
     <div className="p-4 space-y-4">
       <div className="rounded-2xl p-5" style={{ background: "linear-gradient(135deg, rgba(20,241,149,0.1), rgba(153,69,255,0.1))", border: "1px solid rgba(255,255,255,0.05)" }}>
@@ -98,7 +102,7 @@ function TMAHome({ onNavigate }: { onNavigate: (t: TMATab) => void }) {
       </div>
       {connected && portfolio && (
         <div className="rounded-xl p-4" style={{ border: "1px solid rgba(255,255,255,0.05)" }}>
-          <div className="flex items-center justify-between mb-3"><div className="text-sm font-medium">Your Portfolio</div><button onClick={() => onNavigate("dashboard")} className="text-xs text-[#14F195]">View all →</button></div>
+          <div className="flex items-center justify-between mb-3"><div className="text-sm font-medium">Your Portfolio</div><button onClick={() => go("dashboard")} className="text-xs text-[#14F195]">View all →</button></div>
           <div className="text-2xl font-bold tabular-nums">${portfolio.totalValue.toFixed(2)}</div>
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div className="rounded-lg p-2" style={{ background: "rgba(255,255,255,0.05)" }}><div className="text-muted-foreground">SOL</div><div className="font-medium">{portfolio.solBalance.toFixed(4)}</div></div>
@@ -107,8 +111,8 @@ function TMAHome({ onNavigate }: { onNavigate: (t: TMATab) => void }) {
         </div>
       )}
       <div className="grid grid-cols-2 gap-3">
-        <button onClick={() => onNavigate("swap")} className="flex items-center gap-3 rounded-xl p-4 hover:bg-white/5" style={{ border: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.02)" }}><span className="text-xl">💱</span><div className="text-left"><div className="text-sm font-medium">Swap</div><div className="text-[10px] text-muted-foreground">Jupiter</div></div></button>
-        <button onClick={() => onNavigate("staking")} className="flex items-center gap-3 rounded-xl p-4 hover:bg-white/5" style={{ border: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.02)" }}><span className="text-xl">💰</span><div className="text-left"><div className="text-sm font-medium">Stake</div><div className="text-[10px] text-muted-foreground">Native SOL</div></div></button>
+        <button onClick={() => go("swap")} className="flex items-center gap-3 rounded-xl p-4 hover:bg-white/5" style={{ border: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.02)" }}><span className="text-xl">💱</span><div className="text-left"><div className="text-sm font-medium">Swap</div><div className="text-[10px] text-muted-foreground">Jupiter</div></div></button>
+        <button onClick={() => go("staking")} className="flex items-center gap-3 rounded-xl p-4 hover:bg-white/5" style={{ border: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.02)" }}><span className="text-xl">💰</span><div className="text-left"><div className="text-sm font-medium">Stake</div><div className="text-[10px] text-muted-foreground">Native SOL</div></div></button>
       </div>
       <div className="text-center text-[10px] text-muted-foreground py-4">Prophet TMA · v1.0 · Solana</div>
     </div>
@@ -221,7 +225,25 @@ function TMAProfileView() {
 // ─── Main TMA Page ─────────────────────────────────────────────────
 function TMAPage() {
   const { isTMA, user, ready } = useTelegramWebApp();
-  const [tab, setTab] = useState<TMATab>("home");
+  const [tab, setTab] = useState<TMATab>(getInitialTab() as TMATab);
+  const deepLink = parseDeepLink();
+  const refCode = getReferralCode();
+
+  // Handle deeplink navigation after initial render
+  useEffect(() => {
+    if (deepLink.target && deepLink.target !== "home") {
+      setTab(deepLink.target as TMATab);
+      haptic("medium");
+    }
+    if (refCode) {
+      try { localStorage.setItem("prophet_ref", refCode); } catch {}
+    }
+  }, []);
+
+  const navigateTo = (t: TMATab) => {
+    haptic("light");
+    setTab(t);
+  };
 
   if (!ready) {
     return <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center"><div className="text-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-[#14F195] border-t-transparent mx-auto mb-3" /><div className="text-sm text-muted-foreground">Loading…</div></div></div>;
@@ -234,7 +256,7 @@ function TMAPage() {
           <div className="text-4xl">📱</div>
           <div className="text-lg font-bold">Telegram Mini App</div>
           <div className="text-sm text-muted-foreground max-w-xs mx-auto">Open inside Telegram or continue as web app.</div>
-          <button onClick={() => setTab("home")} className="rounded-xl px-6 py-3 font-bold text-sm text-white" style={{ background: "linear-gradient(135deg, #14F195, #9945FF)" }}>Continue</button>
+          <button onClick={() => { haptic("medium"); navigateTo("home"); }} className="rounded-xl px-6 py-3 font-bold text-sm text-white" style={{ background: "linear-gradient(135deg, #14F195, #9945FF)" }}>Continue</button>
         </div>
       </div>
     );
@@ -255,7 +277,7 @@ function TMAPage() {
         {tab === "staking" && <TMADashboard />}
         {tab === "profile" && <TMAProfileView />}
       </div>
-      <TMA_TAB_BAR active={tab} onSelect={setTab} />
+      <TMA_TAB_BAR active={tab} onSelect={navigateTo} />
     </div>
   );
 }
